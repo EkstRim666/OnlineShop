@@ -20,10 +20,14 @@
 import PerfectHTTP
 import PerfectHTTPServer
 
+let authService = AuthServiceImpl()
+
 var routes = Routes()
-routes.add(method: .get, uri: "/**",
-		   handler: StaticFileHandler(documentRoot: "./webroot",
-									  allowResponseFilters: true).handleRequest)
+routes.add(method: .post, uri: "/login", handler: authService.login)
+routes.add(method: .get, uri: "/logout", handler: authService.logout)
+routes.add(method: .post, uri: "/changeUserData", handler: authService.changeUserData)
+routes.add(method: .post, uri: "/registerUser", handler: authService.registerUser)
+
 try HTTPServer.launch(name: "localhost",
 					  port: 8181,
 					  routes: routes,
