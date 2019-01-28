@@ -22,6 +22,7 @@ import PerfectHTTPServer
 
 let authService = AuthServiceImpl()
 let reviewService = ReviewServiceImpl()
+let productService = ProductServiceImpl()
 
 var routes = Routes()
 routes.add(method: .post, uri: "/login", handler: authService.login)
@@ -30,6 +31,8 @@ routes.add(method: .post, uri: "/changeUserData", handler: authService.changeUse
 routes.add(method: .post, uri: "/registerUser", handler: authService.registerUser)
 
 routes.add(method: .post, uri: "/addReview", handler: reviewService.addReview)
+
+routes.add(method: .get, uri: "/catalogData", handler: productService.catalogData)
 
 try HTTPServer.launch(name: "localhost",
 					  port: 8181,
