@@ -11,6 +11,8 @@ import PerfectHTTP
 protocol ProductService {
 	
 	var catalogData: (HTTPRequest, HTTPResponse) -> () { get }
+	
+	var getProduct: (HTTPRequest, HTTPResponse) -> () { get }
 }
 
 class ProductServiceImpl: ProductService {
@@ -48,6 +50,32 @@ class ProductServiceImpl: ProductService {
 					 "discription": "Имеются повреждения"]
 				]
 			]
+		]
+		
+		try? response
+			.setBody(json: successMessage)
+			.completed(status: HTTPResponseStatus.statusFrom(code: 200))
+	}
+	
+	let getProduct: (HTTPRequest, HTTPResponse) -> () = { request, response in
+		guard request.param(name: "id_product") != nil else {
+			let errorMessage: [String: Any] = ["result": 0,
+											   "errorMessage": "error"]
+			try? response
+				.setBody(json: errorMessage)
+				.completed(status: HTTPResponseStatus.custom(
+					code: 401,
+					message: "error"))
+			return
+		}
+		
+		let successMessage: [String: Any] = [
+			"result": 1,
+			"product": [
+				"id_product": 2,
+				"product_name": "Ноутбук",
+				"price": 1999.9,
+				"discription": "Имеются повреждения"]
 		]
 		
 		try? response
